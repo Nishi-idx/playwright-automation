@@ -6,16 +6,33 @@ import { dashboardpage } from '../pages/dashboardpage';
 const url = "https://rahulshettyacademy.com/client/#/auth/login"
 const username = "nishi@yopmail.com"
 const password = "Nishi@123"
+const productname = "iphone 13 pro"
 
 
-test ("PLP add to cart", async ({ page }) => {
-    const loginPage = new LoginPage(page)
+let loginPage : LoginPage
+let dashboard : dashboardpage
+
+test.beforeEach(async({page}) => {
+    loginPage = new LoginPage(page)
     await loginPage.launchURL(url)
     await loginPage.loginIntoApplication(username,password)
     await expect(loginPage.Homepage).toBeVisible()
-    const dashboard = new dashboardpage(page);
+    dashboard = new dashboardpage(page)
+})
+
+test ("PLP add to cart", async ({ page }) => {
+    
     await dashboard.addproducttocart();
     await page.waitForTimeout(5000)
-    await dashboard.viewPDPandaddtocart()
 
+})
+
+test ("PDP add to cart ", async({page}) => {
+    await dashboard.viewPDPandaddtocart()
+    await page.waitForTimeout(3000)
+})
+
+test ("search product", async({page}) => {
+    await dashboard.searchproduct(productname)
+    await page.waitForTimeout(5000)
 })
